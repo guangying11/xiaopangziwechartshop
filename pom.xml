@@ -114,7 +114,8 @@
        <dependency>  
            <groupId>javax.servlet</groupId>  
            <artifactId>servlet-api</artifactId>  
-           <version>3.0-alpha-1</version>  
+           <version>3.0-alpha-1</version>
+           <scope>provided</scope>  
        </dependency>  
  
        <dependency>  
@@ -227,12 +228,12 @@
                 <version>1.0</version>  
                 <configuration>  
                     <container>  
-                        <containerId>tomcat6x</containerId>  
-                        <home>D:\WebServer\apache-tomcat-6.0.39</home>  
+                        <containerId>tomcat7</containerId>  
+                        <home>D:\软件\apache-tomcat-7.0.47-windows-x64\apache-tomcat-7.0.47</home>  
                     </container>  
                     <configuration>  
                         <type>existing</type>  
-                        <home>D:\WebServer\apache-tomcat-6.0.39</home>  
+                        <home>D:\软件\apache-tomcat-7.0.47-windows-x64\apache-tomcat-7.0.47</home>  
                     </configuration>  
                 </configuration>  
             </plugin>
