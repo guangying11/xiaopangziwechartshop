@@ -176,68 +176,8 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>  
-        <plugins>  
-            <!-- Run the JUnit unit tests in an isolated classloader -->  
-            <plugin>  
-                <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-surefire-plugin</artifactId>  
-                <version>2.4.2</version>  
-                <configuration>  
-                    <skipTests>true</skipTests>  
-                </configuration>  
-            </plugin>  
-  
-            <plugin>  
-                <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-war-plugin</artifactId>  
-                <version>2.3</version>  
-                <configuration>  
-                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-                    <webResources>
-						<resource>
-							<directory>src/main/webapp</directory>
-							<filtering>true</filtering>
-							<includes>
-								<include>**/*.xml</include>
-								<include>**/*.properties</include>
-							</includes>
-						</resource>
-					</webResources>  
-                </configuration>  
-            </plugin>  
-  
-            <!-- generate java doc -->  
-            <plugin>  
-                <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-javadoc-plugin</artifactId>  
-                <version>2.9.1</version>  
-                <configuration>  
-                    <javadocDirectory>target/javadoc</javadocDirectory>  
-                    <reportOutputDirectory>target/javadoc</reportOutputDirectory>  
-                    <charset>UTF-8</charset>  
-                    <encoding>UTF-8</encoding>  
-                    <docencoding>UTF-8</docencoding>  
-                    <show>private</show>  
-                </configuration>  
-            </plugin>  
-  
-            <!-- 部署至本机 -->  
-            <plugin>  
-                <groupId>org.codehaus.cargo</groupId>  
-                <artifactId>cargo-maven2-plugin</artifactId>  
-                <version>1.0</version>  
-                <configuration>  
-                    <container>  
-                        <containerId>tomcat7</containerId>  
-                        <home>D:\软件\apache-tomcat-7.0.47-windows-x64\apache-tomcat-7.0.47</home>  
-                    </container>  
-                    <configuration>  
-                        <type>existing</type>  
-                        <home>D:\软件\apache-tomcat-7.0.47-windows-x64\apache-tomcat-7.0.47</home>  
-                    </configuration>  
-                </configuration>  
-            </plugin>
-            
+        <plugins> 
+        	<!--自动生成mybatis代码插件  --> 
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
@@ -247,6 +187,71 @@
                     <overwrite>true</overwrite>
                 </configuration>
             </plugin>
+            <!--Maven 集成Tomcat插件  -->
+            <plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<!-- or if you want to use tomcat 6.x <artifactId>tomcat6-maven-plugin</artifactId> -->
+				<version>2.0</version>
+				<configuration>
+					<!-- http port -->
+					<port>8080</port>
+					<!-- application path always starts with / -->
+					<path>/xpz</path>
+					<!-- optionnal path to a context file -->
+					<!--<serverXml>/opt/newrepo/tulando/trunk/conf/server.xml</serverXml> -->
+					<!-- <contextFile>${project.parent.basedir}/conf/context.xml</contextFile> -->
+					<!-- optionnal system propoerties you want to add -->
+					<systemProperties>
+						<catalina.home>${project.parent.basedir}/</catalina.home>
+						<!--<appserver.base>/Users/olamy/dev/sources/tomcat/maven-plugin-svn/target/checkout/target/appserver-base</appserver.base> 
+							<appserver.home>/Users/olamy/dev/sources/tomcat/maven-plugin-svn/target/checkout/target/appserver-home</appserver.home> 
+							<derby.system.home>/Users/olamy/dev/sources/tomcat/maven-plugin-svn/target/checkout/target/appserver-base/logs</derby.system.home> 
+							<java.io.tmpdir>/Users/olamy/dev/sources/tomcat/maven-plugin-svn/target/checkout/target</java.io.tmpdir> -->
+					</systemProperties>
+					<!-- if you want to use test dependencies rather than only runtime -->
+					<useTestClasspath>false</useTestClasspath>
+					<!-- optionnal if you want to add some extra directories in the class 
+						loader -->
+					<warSourceDirectory>src/main/webapp</warSourceDirectory>
+					<additionalClasspathDirs>
+						<additionalClasspathDir></additionalClasspathDir>
+					</additionalClasspathDirs>
+				</configuration>
+				<!-- if you need some extra dependencies only for running the embeded 
+					tomcat add them in the plugin dependencies -->
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.7</source><!-- 源代码使用的开发版本 -->
+					<target>1.7</target><!-- 需要生成的目标class文件的编译版本 -->
+					<!-- 一般而言，target与source是保持一致的，但是，有时候为了让程序能在其他版本的jdk中运行(对于低版本目标jdk，源代码中需要没有使用低版本jdk中不支持的语法)，会存在target不同于source的情况 -->
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- war插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<!-- 元配置文件的目录，相对于pom.xml文件的路径 -->  
+							<directory>src/main/webapp</directory>
+							<!-- 是否过滤文件，也就是是否启动auto-config的功能 -->
+							<!-- <filtering>true</filtering> -->
+							<includes>
+								<include>**/*.xml</include>
+								<include>**/*.properties</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
         </plugins>  
     </build>
 </project>
